@@ -1,16 +1,15 @@
 
 ## ESP8266 Hacking Evening
 
-A hacking evening by Sean for learning about the ESP8266 and home automation. This is a basic introduction to the world of Arduino/ESP8266 for anyone who has no prior experience with electronics and microcontrollers. We'll be using basic code to get the $5 ESP8266 microcontroller up and running with a blink code (the hardware world's version of Hello World), then progress on to using some amazing libraries such as WifiManager and PubSubClient to control lights from Home Assistant.
+A hacking evening hosted by Sean for learning about the ESP8266 and home automation. This is a basic introduction to the world of Arduino/ESP8266 for anyone who has no prior experience with electronics and microcontrollers. We'll be using basic code to get the $5 ESP8266 microcontroller up and running with a blink code (the hardware world's version of Hello World), then progress on to using some amazing libraries such as WifiManager and PubSubClient to control lights from Home Assistant.
 
 Print off a copy of this image and keep it handy for reference: 
 
-![image alt text](docimg/image_0.png)
+![ESP8266 Wemos Pinout](docimg/image_0.png)
 
 * D4 - LED | D3: GPIO0 (Bootmode) | D8 GPIO15 (Bootmode)
 
 The above image shows how to name the pins in your code. You can use either the direct pin number (```2```) in your code, or the Wemos name (```D4```). Be careful using ```D3``` and ```D8``` as these are used during chip bootup. If these are hooked up incorrectly, your chip may not boot correctly so as a beginner I recommend not using these.
-
 
 
 <table>
@@ -20,24 +19,14 @@ The above image shows how to name the pins in your code. You can use either the 
     <td>Description</td>
   </tr>
   <tr>
-    <td>20161227</td>
+    <td>20180314</td>
     <td>0.1</td>
     <td>Base Version</td>
   </tr>
   <tr>
-    <td>20170108</td>
+    <td>20180328</td>
     <td>0.2</td>
-    <td>Updated with 1.6.8 and OTA mDNS</td>
-  </tr>
-  <tr>
-    <td>20170119</td>
-    <td>0.3</td>
-    <td>Finalized; Removed comments + general adjustments</td>
-  </tr>
-    <tr>
-    <td>20170529</td>
-    <td>0.4</td>
-    <td>Moved to github Readme.md</td>
+    <td>Updates</td>
   </tr>
 </table>
 
@@ -48,42 +37,35 @@ By the end of this section, you will be able to hook up and flash your ESP8266 c
 
 ## Download & Install Software
 
-Download and install Arduino 1.6.5 or 1.6.8 (!!**Not** the latest version!! The latest version does work, however I'm currently on 1.6.8 for various other library dependencies. If you're adventurous you're welcome to use the latest version) from [http://goo.gl/ICw9dP](http://goo.gl/ICw9dP)  This is available for Linux, OSX + Windows.
+Most documentation is using the Arduino "IDE" -- Atom + Platformio is a much better combination. If you don't have atom, download/install from https://atom.io/. Within Atom, we will need to add the "platformio" addon which enables IoT programming for Arduino/ESP8266 and many other devices. Go to Atom -> Preferences -> Install, and search for platformio-ide:
 
-Windows + Mac Users will also need to install the CH340 Serial Driver [http://goo.gl/30vyKq](http://goo.gl/30vyKq) 
+![Platformio Installer](docimgs/img_platformio.png)
 
-## Setup Arduino
+Install all three of `platformio-ide`, `platformio-ide-terminal` and `platformio-ide-debugger`
 
-Out of the box, Arduino is missing a compiler for the ESP8266, as well as some libraries which we will use later. 
+Full installation instructions (including code completion) can be found at https://goo.gl/ABC1MV
 
-1. In Arduino, under Edit -> Preferences add the following URL to the "Additional Boards Manager URLs" field: 
-http://arduino.esp8266.com/stable/package_esp8266com_index.json
+When done, platformio will need to be restarted.
 
-![image alt text](docimg/image_1.png)
-
-2. Under Tools → Board → Boards Manager search for ESP8266 and click Install
-![image alt text](docimg/image_2.png)
-
-3. In the Library Manager (Sketch → Include Library → Library Manager), search for and install the latest of: 
-
-    1. PubSubClient
-
-    2. ArduinoJSON
-![image alt text](docimg/image_3.png)
-
-4. Download WifiManager from [http://goo.gl/K47Fze](http://goo.gl/K47Fze) and extract it to the Arduino Libraries folder. This can be found in Edit → Preferences, then append "/library" to the path in the Sketches folder.
-![image alt text](docimg/image_4.png)
-(Above, WifiManager must be in /Volumes/[...]/Arduino/**library/WifiManager**)
-
-Restart the Arduino program.
+Windows + Mac Users will also need to install the CH340 Serial Driver [http://goo.gl/30vyKq](http://goo.gl/30vyKq)
 
 ## Your first sketch - Blink
 
-The Wemos has an LED on it, which we can blink. This is the "Hello World" of the hardware world. Enter the following code: 
+The Wemos has an LED on it, which we can blink. This is the "Hello World" of the hardware world, and shows that we have working hardware, and a working path between your code and the flash storage of the microcontroller.
+
+In Platformio, choose "New Project". Choose "WeMos D1 R2 & mini (WEMOS)" as these are the boards we have
+![new project wizard](docimg/platformio-newproj.png)
+
+In the project tree on the left, locate main.cpp:
+![main.cpp](docimg/platformio-projtree.png)
+
+Enter the following code:
 
 ![image alt text](docimg/image_5.png)
 
-Configure the board (Wemos D1 Mini R2), and the Port (COM6, /dev/ttyUSB0 or /dev/cu.wchusbserialfa130 depending on your OS) in the Tools menu. Click the upload button ![image alt text](docimg/image_6.png)and you should see the blue light blink continuously - on for 1s and off for 2s.
+Select Upload on the lefthand menu
+
+You should now see the blue light blink continuously - on for 1s and off for 2s.
 
 ## Understanding the code
 
@@ -91,13 +73,13 @@ Configure the board (Wemos D1 Mini R2), and the Port (COM6, /dev/ttyUSB0 or /dev
 
 The blink sketch has two main parts, setup() and loop().
 
-Setup runs once when the power is applied, and does any setup tasks such as defining a pin ("D4") and its direction (OUTPUT → We want to control something here, as opposed to INPUT where we want to read input from a motion sensor, keyboard, temperature sensor, etc). 
+Setup runs once when the power is applied, and does any setup tasks such as defining a pin ("D4") and its direction (OUTPUT → We want to control something here, as opposed to INPUT where we want to read input from a motion sensor, keyboard, temperature sensor, etc).
 
-Once setup completes, loop repeats forever (or until power loss). The LED is hooked to positive, and D4, so applying logic "High" to D4 means the light will turn off (counterintuitively). 
+Once setup completes, loop repeats forever (or until power loss). The LED is hooked to positive, and D4, so applying logic "High" to D4 means the light will turn off (counterintuitively).
 
 # WifiManager + Base Code
 
-All my ESP Projects begin with the base code. The base code will perform the following functions: 
+WifiManager is a simple library which manges wifi (...what else did you expect?). The base code will perform the following functions:
 
 1. During first start, become a Wifi Hotspot with the name ESP-ChipID (where the ChipID is the unique serial of the chip).
 
@@ -111,41 +93,38 @@ Every ESP project will start with this base code, and add additional features on
 
 ## Get the sample code
 
-Download all the code for tonight from the following URL: 
+Download all the code for tonight from the following URL:
 
-[https://github.com/mitchese/esp8266-learnevening](https://github.com/mitchese/esp8266-learnevening) 
+[https://github.com/mitchese/esp8266-learnevening](https://github.com/mitchese/esp8266-learnevening)
 
 Open the code found in the "Base" folder and upload this to your ESP8266 in the same way we flashed blink.
 
 ## Review the serial monitor
 
-Connect to the serial monitor, set the Baudrate to 115,200 and observe what the ESP is doing.
+Connect to the serial monitor and observe what the ESP is doing.
 ![image alt text](docimg/image_8.png)
 
 ## Configure in the captive portal
 
 Connect (using your phone or laptop) to the Wifi Hotspot ESP-<**your**chipid>. **Ensure you are using yours, and not your neighbours!!**
 
-On the main screen, choose "Configuration": 
+On the main screen, choose "Configure WiFi":
 
 ![image alt text](docimg/image_9.png)
 
 Configure with the settings described on your cover sheet.
 ![image alt text](docimg/image_10.png)
 
-After saving, you should be presented with the following screen: 
+After saving, you should be presented with the following screen:
 
 ![image alt text](docimg/image_11.png)
 
-If the ESP8266 needed to change WiFi Channels to match our network, you will be kicked off. Re-connect to ESP8266-<yourchipID> and verify the ESP shows a successful connection: 
-
-![image alt text](docimg/image_12.png)
+If the ESP8266 needed to change WiFi Channels to match our network, you will be kicked off. Re-connect to ESP8266-<yourchipID> and verify the ESP shows a successful connection.
 
 Click Exit Portal to complete configuration.
 
-You are done this exercise when you have exited the portal and your serial monitor shows similar to the following: 
+You are done this exercise when you have exited the portal and your serial monitor shows that it's successfully connected to our test MQTT broker.
 
-![image alt text](docimg/image_13.png)
 
 # MQTT + Light Control
 
@@ -193,7 +172,10 @@ Find the code in the "rgbled" folder downloaded from Github. This extends the ba
 
 ## Upload via OTA Updates
 
-In Arduino, click Sketch → Export Compiled Binary. This will save a .bin file into the same location you have saved your project.
+In Platformio you can configure over the air updates according to the documentation here: http://docs.platformio.org/en/latest/platforms/espressif8266.html#over-the-air-ota-update
+. To avoid accidentally programming someone else’s ESP, we’ll be doing this by hand since the platformio project is the same for everyone.
+
+Choose the "build"  option in Platformio. This will compile and save the binary under "esp8266-learnevening/rgbled/.pioenvs/d1_mini/firmware.bin"
 
 In your browser, go to http://esp8266-yourchipid/ and upload the bin file from above. Keep an eye on the serial monitor to ensure everything goes as expected. Any problems, upload via USB.
 
@@ -209,11 +191,11 @@ I have a few meters and rings of WS2812 LEDs. These are special because they are
 
 # Additional Code
 
-The first example used the Wemos as an ouput from HomeAssistant, to control a light. I have a box of assorted input / output devices which you’re welcome to try out for the rest of the evening. You can sense motion, temperature, light, humidity and barometric pressure; You can control a servo, individual LEDs (WS2812 in bar or ring form), read/write from a MicroSD Card or do what you like. 
+The first example used the Wemos as an ouput from HomeAssistant, to control a light. I have a box of assorted input / output devices which you’re welcome to try out for the rest of the evening. You can sense motion, temperature, light, humidity and barometric pressure; You can control a servo, individual LEDs (WS2812 in bar or ring form), read/write from a MicroSD Card or do what you like.
 
 Most arduino sensors will work out of the box. Note that the ESP8266 can only handle 3.3V on the input pins, and the ADC can tolerate a maximum of 1V.
 
-For example, if you choose a DS1820 temperature sensor: 
+For example, if you choose a DS1820 temperature sensor:
 
 ## Hookup
 
@@ -227,7 +209,7 @@ Connect GND to (-), DQ to the Wemos pin D2 and Vdd to 3.3V as shown below
 
 ## Code
 
-Search the Internet for appropriate code "Arduino DS1820" and adjust the code found into the “setup()” and “loop()” functions of the base code. Please avoid use of the ‘wait’ or ‘delay’ functions, as these may cause the watchdog timer to reboot your chip. 
+Search the Internet for appropriate code "Arduino DS1820" and adjust the code found into the “setup()” and “loop()” functions of the base code. Please avoid use of the ‘wait’ or ‘delay’ functions, as these may cause the watchdog timer to reboot your chip.
 
 ## Extra Credit
 
