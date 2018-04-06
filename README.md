@@ -39,7 +39,7 @@ By the end of this section, you will be able to hook up and flash your ESP8266 c
 
 Most documentation is using the Arduino "IDE" -- Atom + Platformio is a much better combination. If you don't have atom, download/install from https://atom.io/. Within Atom, we will need to add the "platformio" addon which enables IoT programming for Arduino/ESP8266 and many other devices. Go to Atom -> Preferences -> Install, and search for platformio-ide:
 
-![Platformio Installer](docimgs/img_platformio.png)
+![Platformio Installer](docimg/img_platformio.png)
 
 Install all three of `platformio-ide`, `platformio-ide-terminal` and `platformio-ide-debugger`
 
