@@ -4,6 +4,7 @@ autoscale: true
 # [fit] ESP8266
 Sean Mitchell
 April 11 2018
+https://srm.im
 
 ![](img/esp-12.png)
 
@@ -118,68 +119,3 @@ HomeAssistant is running hass.io on the raspberry pi here; Connect your MQTT and
 # [fit] ENDE
 
 ---
-
-footer: © Unsigned Integer UG, 2017
-slidenumbers: true
-
-# Deckset Basics
-
-### Everything you need to know to start making presentations
-
-![inline, filtered](https://www.get-digital.dk/web/getdigital/gfx/products/__generated__resized/380x380/4626tasten_sticker_tux_farbe.jpg)
-
----
-
-Paragraphs **Bold** _italic_ **_BoldItalic_** in the Markdown
-
-* BulletList [Links Like this](http://www.decksetapp.com)
-
-1. This
-1. Is
-1. OrderedList
-
-Code:
-
-```objectivec
- UIView *someView = [[UIView alloc] init];
- NSString *string = @"some string that is fairly long, with many words";
-```
-
-![right](https://kubernetes.io/images/favicon.png)
-
-
-^speakernotes go here and can't be seen on the presentation
-
----
-
-# [fit] BIG
-
-^ This slide must be left blank
-
----
-Video
-
-![autoplay](https://www.youtube.com/watch?v=P0_QrKfD8us)
-
-
----
-^ The : in the --- line shows how to align right/left/default/centre
-
-First Name | Last Name | Born | Birthplace
----:|:---|---|:---:
-Ross | **Anderson** | Sep 15, **1956** | :gb:
-Whitfield | **Diffie** | Jun 4, **1944** | :us:
-Clifford | **Cocks** | 28 Dec, **1950** | :gb:
-Ralph | **Merkle** | Feb 2, **1952** | :us:
-
-
---
-Sean Mitchell
--------------------
-
-Brunnenallee 6
-50226 Frechen
-
-Mobile: +49 (0)176 456 357 69
-E-mail: sean@srm.im
-Homepage: https://srm.im
